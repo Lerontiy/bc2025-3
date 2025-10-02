@@ -38,21 +38,21 @@ if (!input) {
         process.exit();
     }
 
+    let keys = Object.keys(obj[0]);
+    if (!options.age) {
+        keys = keys.filter(key => key !== 'Age');
+        //console.log(keys);
+    }
+    //console.log(+options.survived || 0);
+    if (options.survived){
+        obj = obj.filter(passenger => {
+            return passenger.Survived === '1';
+        });
+    }
+    
+    jsonStr = JSON.stringify(obj, keys, 4);
+
     if (output) {
-        let keys = Object.keys(obj[0]);
-        if (!options.age) {
-            keys = keys.filter(key => key !== 'Age');
-            //console.log(keys);
-        }
-        
-        //console.log(+options.survived || 0);
-        if (options.survived){
-            obj = obj.filter(passenger => {
-                return passenger.Survived === '1';
-            });
-        }
-        
-        jsonStr = JSON.stringify(obj, keys, 4);
         writeFileSync(output, jsonStr, {
             'encoding': 'utf8',
             'flag': 'w',
@@ -62,6 +62,6 @@ if (!input) {
 
     if (display) {
         console.log(jsonStr)
-        console.log(obj.length)
+        //console.log(obj.length)
     }
 }
