@@ -38,22 +38,51 @@ if (!input) {
         process.exit();
     }
 
+    /*
     let keys = Object.keys(obj[0]);
     if (!options.age) {
         keys = keys.filter(key => key !== 'Age');
         //console.log(keys);
     }
+    */
     //console.log(+options.survived || 0);
+
     if (options.survived){
         obj = obj.filter(passenger => {
             return passenger.Survived === '1';
         });
     }
-    
-    jsonStr = JSON.stringify(obj, keys, 4);
 
+    /*
+    keys = [
+        "Name",
+        "Ticket"
+    ]
+
+    if (program.age) {
+        keys.append("Age");
+    }
+    */
+
+    //jsonStr = JSON.stringify(obj, keys, 4);
+
+    let all_zapys = []
+    for (let passanger of obj) { 
+        let zapys = [];
+        zapys.push(passanger.Name);
+        if (options.age) {
+            zapys.push(passanger.Age);
+        }
+        zapys.push(passanger.Ticket);
+        //console.log(passanger.Name);
+        all_zapys.push(zapys.join(" "));
+    }
+
+    //console.log(all_zapys.length);
+    all_zapys = all_zapys.join("\n");
+        
     if (output) {
-        writeFileSync(output, jsonStr, {
+        writeFileSync(output, all_zapys, {
             'encoding': 'utf8',
             'flag': 'w',
             'flush': true
@@ -61,7 +90,7 @@ if (!input) {
     }
 
     if (display) {
-        console.log(jsonStr)
+        console.log(all_zapys)
         //console.log(obj.length)
     }
 }
